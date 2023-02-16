@@ -1,0 +1,56 @@
+# Given the curiosity about how certain factors contribute to medical insurance costs, I'll be using a formula that estimates a persons's yearly insurance costs. The different factors will be investigated to check how each one of them is affecting the prediction.
+
+# creating the initial variables below
+age = 28
+smoker = 0 #1 if smoker 0 if not a smoker
+sex = 0 #0 if female, 1 if male
+num_of_children = 3
+bmi = 26.2
+# Adding insurance estimate formula below
+insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+
+print("This person's insurance cost is " + str(insurance_cost) + " dollars.")
+
+# Checking contribution of age Factor
+age += 4
+# calculate the new insurance cost
+new_insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+# calculate change between the new insurance cost and original insurance cost
+change_in_insurance_cost = new_insurance_cost - insurance_cost
+print("The change in cost of insurance after increasing the age by 4 years is " + str(change_in_insurance_cost) + " dollars.")
+
+# Checking contribution of BMI Factor
+age  = 28
+bmi += 3.1
+# calculate the new insurance cost
+new_insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+# calculate change between the new insurance cost and original insurance cost
+change_in_insurance_cost = new_insurance_cost - insurance_cost
+print("The change in estimated insurance cost after increasing BMI by 3.1 is " + str(change_in_insurance_cost) + " dollars.")
+
+# Checking contribution of sex factor (Male/Female)
+bmi = 26.2
+sex = 1
+# calculate the new insurance cost
+new_insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+# calculate change between the new insurance cost and original insurance cost
+change_in_insurance_cost = new_insurance_cost - insurance_cost
+print("The change in estimated insurance cost for being male instead of female is " + str(change_in_insurance_cost) + " dollars.")
+
+# Checking contribution of smoker factor
+sex = 0
+smoker = 1
+# calculate the new insurance cost
+new_insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+# calculate change between the new insurance cost and original insurance cost
+change_in_insurance_cost = new_insurance_cost - insurance_cost
+print("The change in estimated insurance cost for being a smoker is " + str(change_in_insurance_cost) + " dollars.")
+
+# Checking contribution of num_of_children factor
+smoker = 0
+num_of_children = 4 
+# calculate the new insurance cost
+new_insurance_cost = 250 * age - 128 * sex + 370 * bmi + 425 * num_of_children + 24000 * smoker - 12500
+# calculate change between the new insurance cost and original insurance cost
+change_in_insurance_cost = new_insurance_cost - insurance_cost
+print("The change in estimated insurance cost for having one more child is " + str(change_in_insurance_cost) + " dollars.")
