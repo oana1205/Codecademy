@@ -1,0 +1,62 @@
+import codecademylib3
+import pandas as pd
+
+#examining the first few rows of ad_clicks
+
+ad_clicks = pd.read_csv('ad_clicks.csv')
+print(ad_clicks.head(10))
+
+#finding out which ad platform is getting most views
+
+views_per_source = ad_clicks.groupby('utm_source').user_id.count().reset_index().sort_values('user_id', ascending = False)
+views_per_source_sorted = views_per_source
+print(views_per_source)
+
+#check the ads that were clicked when shown
+ad_clicks['is_click'] = ~ad_clicks.ad_click_timestamp.isnull()
+print(ad_clicks)
+
+#check the percent of people who clicked on ads from each utm_source
+clicks_by_source = ad_clicks.groupby(['utm_source', 'is_click']).user_id.count().reset_index()
+print (clicks_by_source)
+
+#pivoting the resulted table
+clicks_pivot = clicks_by_source.pivot(columns='is_click', index='utm_source', values='user_id')
+
+#creating a column showing the percent of users who clicked on the ad from each utm_source
+clicks_pivot['percent_clicked'] = \
+  clicks_pivot[True] / (clicks_pivot[True] + clicks_pivot[False])
+print(clicks_pivot)
+experimental = ad_clicks.groupby(['experimental_group', 'is_click']).user_id.count().reset_index()
+
+#The column experimental_group tells us whether the user was shown Ad A or Ad B & check to see if a greater percentage of users clicked on Ad A or Ad B
+
+experimental_pivot = experimental.pivot(columns='is_click', index='experimental_group', values='user_id')
+experimental_pivot['percent_clicked'] = \
+	experimental_pivot[True] /\
+  (experimental_pivot[True] + 
+  experimental_pivot[False])
+print (experimental_pivot)
+
+#grouping the clicks by A or B ads
+a_clicks= ad_clicks[ad_clicks.experimental_group == 'A']
+b_clicks= ad_clicks[ad_clicks.experimental_group == 'B']
+
+#calculating the percent of users who clicked on the ad by day
+aclicks = a_clicks.groupby(['is_click', 'day']).user_id.count().reset_index()
+bclicks= b_clicks.groupby(['is_click', 'day']).user_id.count().reset_index()
+
+aclicks_pivot = aclicks.pivot(columns='is_click',index='day',values='user_id')
+aclicks_pivot['percent_clicked'] = \
+	aclicks_pivot[True] /\
+  (aclicks_pivot[True] + 
+  aclicks_pivot[False])
+print (aclicks_pivot)
+bclicks_pivot = bclicks.pivot(columns='is_click',index='day',values='user_id')
+bclicks_pivot['percent_clicked'] = \
+	bclicks_pivot[True] /\
+  (bclicks_pivot[True] + 
+  bclicks_pivot[False])
+print (bclicks_pivot)
+
+#results are showing that over the course of the week the percent of clicks on A ad were increasing, while the percent of clicks on B ad was aproximately constant, lower than the percent of clicks on A ad. As a conclusion, the A ad was more effective so would be recommended to be used.  
